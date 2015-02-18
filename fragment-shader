@@ -1,0 +1,26 @@
+precision mediump float;
+
+varying vec2 vTextureCoord;
+varying vec4 vColor;
+varying vec3 vLightWeighting;
+
+uniform sampler2D uSampler;
+uniform bool uUseTextures;
+uniform float uTextureAlpha;
+
+void main(void) {
+    if(uUseTextures) {
+        vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+        
+        //experiment with interpolation
+        //textureColor = vec4(vTextureCoord.s, vTextureCoord.t, 1, 1);
+        
+        gl_FragColor = vec4(textureColor.rgb*vLightWeighting, textureColor.a);//*uTextureAlpha + vColor*(1.0-uTextureAlpha);
+
+        //vec4 realColor = textureColor*uTextureAlpha + vColor*(1.0-uTextureAlpha);
+        //gl_FragColor = vec4(realColor.rgb*uTextureAlpha, realColor.a);
+
+    } else {
+        gl_FragColor = vec4(vColor.rgb*vLightWeighting, vColor.a);
+    }
+}

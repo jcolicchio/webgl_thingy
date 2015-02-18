@@ -1,0 +1,50 @@
+attribute vec3 aVertexPosition;
+attribute vec3 aVertexNormal;
+attribute vec2 aTextureCoord;
+attribute vec4 aVertexColor;
+
+
+uniform mat4 uMVMatrix;
+uniform mat4 uCamMatrix;
+uniform mat4 uPMatrix;
+uniform mat3 uNMatrix; // just inverse of mv transforms
+uniform mat3 uNCamMatrix; // inverse of cam transforms
+
+uniform bool uUseFlashlight;
+uniform bool uUseLighting;
+
+varying vec2 vTextureCoord;
+varying vec4 vColor;
+varying vec3 vLightWeighting;
+
+
+void main(void) {
+    gl_Position = uPMatrix * uCamMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+    vTextureCoord = aTextureCoord;
+
+    //top light
+    vec3 topLightDirection = vec3(0, 1, 0);
+
+    //front light
+    vec3 camLightDirection = vec3(0, 0, 1);
+
+    //vLightWeighting = vec3(1, 1, 1);
+    //vLightWeighting = aVertexPosition;
+    vec3 transformedTopNormal = normalize(uNMatrix * aVertexNormal);
+    vec3 transformedCamNormal = normalize(uNCamMatrix * uNMatrix * aVertexNormal);
+    //vec3 transformedLight = lightDirection;
+
+    float topLightWeighting = max(dot(transformedTopNormal, topLightDirection), 0.0);
+    float camLightWeighting = max(dot(transformedCamNormal, camLightDirection), 0.0);
+
+    vLightWeighting = vec3(0.2, 0.2, 0.2) + vec3(0.4, 0.4, 0.4) * topLightWeighting;
+    if(uUseFlashlight) {
+        vLightWeighting = vLightWeighting + vec3(0.4, 0.4, 0.4) * camLightWeighting;
+    }
+    if(!uUseLighting) {
+        vLightWeighting = vec3(1.0, 1.0, 1.0);
+    }
+
+
+    vColor = aVertexColor;
+}
