@@ -382,11 +382,11 @@ function drawScene(snowmen) {
 
 
     mat4.identity(camMatrix);
-    mat4.rotateX(camMatrix, GLPlayer.rotation.vertical);
-    mat4.rotateY(camMatrix, GLPlayer.rotation.horizontal);
+    mat4.rotateX(camMatrix, GLPlayer.camera.rotation.vertical);
+    mat4.rotateY(camMatrix, GLPlayer.camera.rotation.horizontal);
 
     //disable cam movement
-    mat4.translate(camMatrix, [-GLPlayer.position.x, -GLPlayer.position.z-4, -GLPlayer.position.y]);
+    mat4.translate(camMatrix, [-GLPlayer.camera.position.x, -GLPlayer.camera.position.z-4, -GLPlayer.camera.position.y]);
 
     mat4.identity(mvMatrix);
 
@@ -581,7 +581,7 @@ function drawScene(snowmen) {
             gl.uniform1i(shaderProgram.samplerUniform, 0);
             
             mat4.rotateX(mvMatrix, thingerRotation);
-            fractal(5);
+            fractal2(128);
             /*renderModel(Sphere32x32);
 
             mat4.translate(mvMatrix, [0, 1, 0]);
@@ -690,4 +690,16 @@ var GLPlayer = {
         vertical: 0
     }//,
     //flashlight: false
+    ,
+    camera: {
+        position: {
+            x: 0,
+            y: 0,
+            z: 0
+        },
+        rotation: {
+            horizontal: 0,
+            vertical: 0
+        }
+    }
 }
