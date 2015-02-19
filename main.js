@@ -613,7 +613,7 @@ function drawScene(snowmen) {
                 mvPushMatrix();
                     var snowman = snowmen[key];
                     var position = snowman.position;
-                    mat4.translate(mvMatrix, [position.x, -1, position.y]);
+                    mat4.translate(mvMatrix, [position.x, -1+position.z, position.y]);
                     mat4.rotateY(mvMatrix, Math.PI-snowman.input.angle);
                     
                     //renderModel(Sphere32x32);
