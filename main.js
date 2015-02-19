@@ -386,7 +386,7 @@ function drawScene(snowmen) {
     mat4.rotateY(camMatrix, GLPlayer.rotation.horizontal);
 
     //disable cam movement
-    mat4.translate(camMatrix, [GLPlayer.position.x, -GLPlayer.position.z-3, GLPlayer.position.y]);
+    mat4.translate(camMatrix, [-GLPlayer.position.x, -GLPlayer.position.z-4, -GLPlayer.position.y]);
 
     mat4.identity(mvMatrix);
 
@@ -581,7 +581,7 @@ function drawScene(snowmen) {
             gl.uniform1i(shaderProgram.samplerUniform, 0);
             
             mat4.rotateX(mvMatrix, thingerRotation);
-            fractal2(16);
+            fractal(5);
             /*renderModel(Sphere32x32);
 
             mat4.translate(mvMatrix, [0, 1, 0]);
@@ -614,7 +614,7 @@ function drawScene(snowmen) {
                     var snowman = snowmen[key];
                     var position = snowman.position;
                     mat4.translate(mvMatrix, [position.x, -1, position.y]);
-                    mat4.rotateY(mvMatrix, -snowman.input.angle);
+                    mat4.rotateY(mvMatrix, Math.PI-snowman.input.angle);
                     
                     //renderModel(Sphere32x32);
 
